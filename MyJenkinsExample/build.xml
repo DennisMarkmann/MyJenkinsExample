@@ -1,4 +1,4 @@
-<project name="hello-world-ant" basedir="." default="main">
+<project name="MyJenkinsExample" basedir="." default="main">
  
   <!-- Ant properties -->
   <property name="src.dir"     value="src"/>
