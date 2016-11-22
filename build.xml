@@ -1,56 +1,38 @@
-<project name="MyJenkinsExample" basedir="." default="main">
- 
-  <!-- Ant properties -->
-  <property name="src.dir"     value="src"/>
-  <property name="build.dir"   value="build"/>
-  <property name="classes.dir" value="${build.dir}/classes"/>
-  <property name="jar.dir"     value="${build.dir}/jar"/>
-  <property name="main-class"  value="myJenkinsExample.HelloWorld2"/>
- 
-  <target name="clean">
-    <delete dir="${build.dir}"/>
-  </target>
- 
+<project name="junit-example">
+  <property name="main.src.dir" value="src/main/java"/>
+  <property name="test.src.dir" value="src/test/java"/>
+  <property name="build.dir" value="build/"/>
+  <property name="lib.dir" value="${basedir}/lib" />
+  <property name="class.dir" value="${basedir}/classes" />
+	
+  <path id="classpath.test">
+    <pathelement location="${build.dir}"/>
+  	<pathelement location="${lib.dir}/junit-4.12.jar" />
+  	<pathelement location="${lib.dir}/ant-junit-1.6.1.jar" />
+  </path>
+
   <target name="compile">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
-  </target>
- 
-  <target name="jar" depends="compile">
-    <mkdir dir="${jar.dir}"/>
-    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
-      <manifest>
-        <attribute name="Main-Class" value="${main-class}"/>
-      </manifest>
-    </jar>
-  </target>
- 
-  <target name="run" depends="jar">
-    <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${main.src.dir}" destdir="${build.dir}" includeantruntime="false"/>
   </target>
 
-  <target name="clean-build" depends="clean,jar"/>
- 
-  <target name="main" depends="clean,run"/>
- 
-  <target name="test">
-  <junit printsummary="yes" haltonfailure="yes">
-    <classpath>
-      <pathelement location="${project.class.path}"/>
-      <pathelement location="${build.tests}"/>
-      <pathelement location="junit.jar"/>
-      <pathelement path="${java.class.path}"/>
-    </classpath>
-    <test name="myJenkinsExample.TestJunit"
-             haltonfailure="no" outfile="result">
-      <formatter type="plain"/>
-      <formatter type="xml"/>
-    </test>
-  </junit>
-</target>
- 
-  <presetdef name="javac">
-    <javac includeantruntime="false" />
-  </presetdef>
- 
+  <target name="test-compile" depends="compile">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${test.src.dir}" destdir="${build.dir}" includeantruntime="false">
+        <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="test-compile">
+    <junit printsummary="on" haltonfailure="yes" fork="no">
+        <classpath>
+          <path refid="classpath.test"/>
+          <pathelement location="${build.dir}"/>
+        </classpath>
+        <formatter type="brief" usefile="false" />
+        <batchtest>
+            <fileset dir="${test.src.dir}" includes="**/*Test.java" />
+        </batchtest>
+    </junit>
+  </target>
 </project>
