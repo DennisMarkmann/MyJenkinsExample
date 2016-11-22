@@ -38,6 +38,7 @@
     <classpath>
       <pathelement location="${project.class.path}"/>
       <pathelement location="${build.tests}"/>
+      <pathelement location="junit.jar"/>
       <pathelement path="${java.class.path}"/>
     </classpath>
     <test name="myJenkinsExample.TestJunit"
