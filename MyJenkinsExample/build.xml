@@ -8,7 +8,6 @@
   <path id="classpath.test">
     <pathelement location="${build.dir}"/>
   	<pathelement location="${lib.dir}/junit-4.12.jar" />
-  	<pathelement location="${lib.dir}/ant-junit-1.6.1.jar" />
   </path>
 
   <target name="compile">
