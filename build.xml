@@ -49,4 +49,8 @@
   </junit>
 </target>
  
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
+ 
 </project>
