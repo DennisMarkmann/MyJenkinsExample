@@ -35,7 +35,7 @@
   
   <target name="test"/>
  
-  <target name="unit-test-1" >
+  <target name="test">
   <junit printsummary="yes" haltonfailure="yes">
     <classpath>
       <pathelement location="${project.class.path}"/>
