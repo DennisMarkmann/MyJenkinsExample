@@ -1,37 +1,47 @@
-<project name="junit-example">
-  <property name="main.src.dir" value="src/main/java"/>
-  <property name="test.src.dir" value="src/test/java"/>
-  <property name="build.dir" value="build/"/>
-  <property name="lib.dir" value="${basedir}/lib" />
-  <property name="class.dir" value="${basedir}/classes" />
-	
-  <path id="classpath.test">
-    <pathelement location="${build.dir}"/>
-  	<pathelement location="${lib.dir}/junit-4.12.jar" />
-  </path>
+<project name="MyJenkinsExample">
+	<property name="main.src.dir" value="src/main/java" />
+	<property name="test.src.dir" value="src/test/java" />
+	<property name="build.dir" value="build/" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="class.dir" value="${basedir}/classes" />
 
-  <target name="compile">
-    <mkdir dir="${build.dir}"/>
-    <javac srcdir="${main.src.dir}" destdir="${build.dir}" includeantruntime="false"/>
-  </target>
+	<path id="classpath.test">
+		<pathelement location="${build.dir}" />
+		<pathelement location="${lib.dir}/junit-4.12.jar" />
+	</path>
 
-  <target name="test-compile" depends="compile">
-    <mkdir dir="${build.dir}"/>
-    <javac srcdir="${test.src.dir}" destdir="${build.dir}" includeantruntime="false">
-        <classpath refid="classpath.test"/>
-    </javac>
-  </target>
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${main.src.dir}" destdir="${build.dir}" includeantruntime="false" />
+	</target>
 
-  <target name="test" depends="test-compile">
-    <junit printsummary="on" haltonfailure="yes" fork="no">
-        <classpath>
-          <path refid="classpath.test"/>
-          <pathelement location="${build.dir}"/>
-        </classpath>
-        <formatter type="brief" usefile="false" />
-        <batchtest>
-            <fileset dir="${test.src.dir}" includes="**/*Test.java" />
-        </batchtest>
-    </junit>
-  </target>
+	<target name="test-compile" depends="compile">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${build.dir}" includeantruntime="false">
+			<classpath refid="classpath.test" />
+		</javac>
+	</target>
+
+	<target name="test" depends="test-compile">
+		<junit printsummary="on" haltonfailure="yes" fork="no">
+			<classpath>
+				<path refid="classpath.test" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${test.src.dir}" includes="**/*Test.java" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="jar">
+		<delete file="MyJenkinsExample.jar" />
+		<delete file="MANIFEST.MF" />
+		<manifest file="MANIFEST.MF">
+			<attribute name="Main-Class" value="Calculator.java" />
+			<attribute name="Class-Path" value="." />
+		</manifest>
+		<jar destfile="MyJenkinsExample.jar" basedir="." includes="*.class" manifest="MANIFEST.MF" />
+	</target>
 </project>
